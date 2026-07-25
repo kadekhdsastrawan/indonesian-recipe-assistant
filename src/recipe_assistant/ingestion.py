@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 import dlt
 from openai import OpenAI
+from pgvector import Vector
 from psycopg import sql
 from .config import settings
 from .corpus import load_recipes
@@ -26,7 +27,8 @@ def ingest(corpus_path: str | Path = "data/recipes_indonesia.csv") -> int:
     )
     with connection() as conn, conn.cursor() as cur:
         for recipe, vector in zip(recipes, vectors, strict=True):
-            cur.execute(statement, [getattr(recipe, field) for field in recipe.__dataclass_fields__] + [recipe.document, vector])
+            pg_embedding = Vector(vector) if vector is not None else None
+            cur.execute(statement, [getattr(recipe, field) for field in recipe.__dataclass_fields__] + [recipe.document, pg_embedding])
     return len(recipes)
 
 

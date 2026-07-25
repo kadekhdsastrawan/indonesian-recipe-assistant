@@ -1,4 +1,5 @@
 from collections import defaultdict
+from pgvector import Vector
 from .config import settings
 from .db import connection
 from .models import Recipe, RetrievedRecipe
@@ -21,7 +22,10 @@ def text_search(query: str, limit: int = 10) -> list[RetrievedRecipe]:
 def vector_search(query: str, embedding: list[float], limit: int = 10) -> list[RetrievedRecipe]:
     statement = f"SELECT {RECIPE_COLUMNS}, 1 - (embedding <=> %s) score FROM recipes WHERE embedding IS NOT NULL ORDER BY embedding <=> %s LIMIT %s"
     with connection() as conn, conn.cursor() as cur:
-        cur.execute(statement, (embedding, embedding, limit))
+        # A plain Python list is adapted by psycopg as double precision[];
+        # pgvector's cosine operator requires its vector type instead.
+        query_vector = Vector(embedding)
+        cur.execute(statement, (query_vector, query_vector, limit))
         return [RetrievedRecipe(_recipe(row), float(row[15]), "vector", rank + 1) for rank, row in enumerate(cur.fetchall())]
 
 
