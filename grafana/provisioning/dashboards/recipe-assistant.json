@@ -1,0 +1,12 @@
+{
+  "title": "Indonesian Recipe Assistant", "timezone": "browser", "schemaVersion": 39, "version": 1,
+  "panels": [
+    {"type":"timeseries","title":"Request volume","targets":[{"format":"time_series","rawSql":"SELECT created_at AS time, count(*) AS requests FROM chat_events WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1","refId":"A"}]},
+    {"type":"timeseries","title":"P95 response latency (ms)","targets":[{"format":"time_series","rawSql":"SELECT date_trunc('minute', created_at) AS time, percentile_cont(.95) WITHIN GROUP (ORDER BY latency_ms) AS p95_ms FROM chat_events WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1","refId":"A"}]},
+    {"type":"timeseries","title":"Errors","targets":[{"format":"time_series","rawSql":"SELECT created_at AS time, count(*) AS errors FROM chat_events WHERE error IS NOT NULL AND $__timeFilter(created_at) GROUP BY 1 ORDER BY 1","refId":"A"}]},
+    {"type":"timeseries","title":"Retrieval Hit Rate","targets":[{"format":"time_series","rawSql":"SELECT created_at AS time, hit_rate FROM evaluation_runs WHERE $__timeFilter(created_at) ORDER BY 1","refId":"A"}]},
+    {"type":"timeseries","title":"Retrieval MRR","targets":[{"format":"time_series","rawSql":"SELECT created_at AS time, mrr FROM evaluation_runs WHERE $__timeFilter(created_at) ORDER BY 1","refId":"A"}]},
+    {"type":"bargauge","title":"User feedback","targets":[{"format":"table","rawSql":"SELECT CASE rating WHEN 1 THEN 'Helpful' ELSE 'Not helpful' END AS metric, count(*) AS value FROM feedback GROUP BY rating","refId":"A"}]},
+    {"type":"timeseries","title":"Estimated tokens","targets":[{"format":"time_series","rawSql":"SELECT date_trunc('hour', created_at) AS time, sum(token_estimate) AS tokens FROM chat_events WHERE $__timeFilter(created_at) GROUP BY 1 ORDER BY 1","refId":"A"}]}
+  ]
+}

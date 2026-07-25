@@ -1,0 +1,1 @@
+"""Indonesian Recipe Assistant."""

@@ -1,0 +1,30 @@
+[project]
+name = "indonesian-recipe-assistant"
+version = "0.1.0"
+description = "An English-language RAG assistant for Indonesian recipes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "dlt[postgres]>=1.6,<2",
+  "openai>=1.65,<2",
+  "pgvector>=0.3,<1",
+  "psycopg[binary]>=3.2,<4",
+  "pydantic>=2.10,<3",
+  "python-dotenv>=1.0,<2",
+  "sentence-transformers>=3.4,<4",
+  "streamlit>=1.42,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<9", "pytest-mock>=3.14,<4", "ruff>=0.9,<1"]
+
+[project.scripts]
+recipe-ingest = "recipe_assistant.ingestion:main"
+recipe-evaluate = "recipe_assistant.evaluate:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

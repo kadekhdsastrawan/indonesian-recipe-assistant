@@ -1,0 +1,10 @@
+[
+  {"query":"How do I make Indonesian beef curry?","relevant_ids":["R001"]},
+  {"query":"What is a quick Indonesian fried rice recipe?","relevant_ids":["R002"]},
+  {"query":"I need a vegetarian Indonesian meal with peanut sauce","relevant_ids":["R004","R021"]},
+  {"query":"Which dessert uses pandan and palm sugar?","relevant_ids":["R024","R025","R026"]},
+  {"query":"How can I cook spicy Lombok grilled chicken?","relevant_ids":["R032"]},
+  {"query":"Recommend a coconut chicken stew for Eid","relevant_ids":["R029"]},
+  {"query":"What Indonesian noodle dish can I stir fry?","relevant_ids":["R009"]},
+  {"query":"Find an Indonesian fish cake recipe","relevant_ids":["R011"]}
+]
